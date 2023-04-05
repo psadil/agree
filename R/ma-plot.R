@@ -1,27 +1,25 @@
-
-
-.sem <- function(x, scale = 1){
+.sem <- function(x, scale = 1) {
   sqrt(scale * stats::var(x) / length(x))
 }
 
-.ci <- function(x, scale = 1){
+.ci <- function(x, scale = 1) {
   n <- length(x)
-  standard_error <- .sem(x, scale=scale)
+  standard_error <- .sem(x, scale = scale)
   avg <- mean(x)
   tibble::tibble(
-    lower = avg - stats::qt(0.975, df = n-1)*standard_error,
-    upper = avg + stats::qt(0.975, df = n-1)*standard_error
+    lower = avg - stats::qt(0.975, df = n - 1) * standard_error,
+    upper = avg + stats::qt(0.975, df = n - 1) * standard_error
   )
 }
 
-.both <- function(center, shift){
+.both <- function(center, shift) {
   tibble::tibble(
     lower = center - shift,
     upper = center + shift
   )
 }
 
-summary_tbl <- function(d, .dependentvar, .by = NULL){
+summary_tbl <- function(d, .dependentvar, .by = NULL) {
   by <- enquo(.by)
 
   d |>
@@ -29,17 +27,20 @@ summary_tbl <- function(d, .dependentvar, .by = NULL){
       dplyr::across(
         {{ .dependentvar }},
         .ci,
-        .unpack = ".mean_{inner}"),
+        .unpack = ".mean_{inner}"
+      ),
       dplyr::across(
         {{ .dependentvar }},
         list(
           "n" = length,
           "mean" = mean,
-          "var" = stats::var),
-        .names = ".{.fn}"),
+          "var" = stats::var
+        ),
+        .names = ".{.fn}"
+      ),
       dplyr::across(
         .data$.mean,
-        \(x) .both(x, shift = 2*sqrt(.data$.var)),
+        \(x) .both(x, shift = 2 * sqrt(.data$.var)),
         .unpack = ".{inner}"
       ),
       dplyr::across(
@@ -47,7 +48,8 @@ summary_tbl <- function(d, .dependentvar, .by = NULL){
         \(x) .both(x, shift = sqrt(3 * .data$.var / .data$.n)),
         .unpack = "{outer}_{inner}"
       ),
-      .by = !!by)
+      .by = !!by
+    )
 }
 
 StatBA <- ggplot2::ggproto(
@@ -55,7 +57,6 @@ StatBA <- ggplot2::ggproto(
   ggplot2::Stat,
   required_aes = c("x", "y"),
   compute_group = function(data, scales, na.rm = FALSE) {
-
     summaries <- summary_tbl(data, y)
 
     data$y <- summaries$.mean
@@ -90,7 +91,6 @@ stat_ba <- function(
     show.legend = NA,
     inherit.aes = TRUE,
     ...) {
-
   ggplot2::layer(
     stat = StatBA,
     data = data,
@@ -115,21 +115,19 @@ GeomBA <- ggplot2::ggproto(
     alpha = 0.2
   ),
   draw_panel = function(
-    self,
-    data,
-    ...
-  ) {
-
+      self,
+      data,
+      ...) {
     center <- data |>
       dplyr::mutate(ymin = y_lower, ymax = y_upper) |>
       dplyr::arrange(x)
 
     lower <- data |>
-      dplyr::mutate(y = lower, ymax = lower_upper, fill="red") |>
+      dplyr::mutate(y = lower, ymax = lower_upper, fill = "red") |>
       dplyr::arrange(x)
 
     upper <- data |>
-      dplyr::mutate(y = upper, ymin = upper_lower, fill="red") |>
+      dplyr::mutate(y = upper, ymin = upper_lower, fill = "red") |>
       dplyr::arrange(x)
 
     grobs <- grid::gList(
@@ -159,17 +157,18 @@ GeomBA <- ggplot2::ggproto(
 #' d <- data.frame(x = rnorm(100), y = rnorm(100)) |>
 #'   dplyr::mutate(
 #'     .difference = x - y,
-#'     .average = (x + y) / 2)
+#'     .average = (x + y) / 2
+#'   )
 #' d |>
-#'   ggplot2::ggplot(ggplot2::aes(x=.average, y=.difference)) + geom_ba()
-#'
-#' d$group <- rep(c(1,2), each=50)
-#'
-#' d |>
-#'   ggplot2::ggplot(ggplot2::aes(x=.average, y=.difference)) +
-#'   ggplot2::facet_wrap(~group) +
+#'   ggplot2::ggplot(ggplot2::aes(x = .average, y = .difference)) +
 #'   geom_ba()
 #'
+#' d$group <- rep(c(1, 2), each = 50)
+#'
+#' d |>
+#'   ggplot2::ggplot(ggplot2::aes(x = .average, y = .difference)) +
+#'   ggplot2::facet_wrap(~group) +
+#'   geom_ba()
 #'
 geom_ba <- function(
     mapping = NULL,
@@ -180,7 +179,6 @@ geom_ba <- function(
     show.legend = NA,
     inherit.aes = TRUE,
     ...) {
-
   ggplot2::layer(
     geom = GeomBA,
     mapping = mapping,
@@ -192,4 +190,3 @@ geom_ba <- function(
     params = list(na.rm = na.rm, ...)
   )
 }
-

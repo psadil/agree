@@ -39,16 +39,17 @@ Bland-Altman Agreement Plot
 d <- data.frame(x = rnorm(100), y = rnorm(100)) |>
   dplyr::mutate(
     .difference = x - y,
-    .average = (x + y) / 2)
+    .average = (x + y) / 2
+  )
 d |>
-  ggplot2::ggplot(ggplot2::aes(x=.average, y=.difference)) + geom_ba()
-
-d$group <- rep(c(1,2), each=50)
-
-d |>
-  ggplot2::ggplot(ggplot2::aes(x=.average, y=.difference)) +
-  ggplot2::facet_wrap(~group) +
+  ggplot2::ggplot(ggplot2::aes(x = .average, y = .difference)) +
   geom_ba()
 
+d$group <- rep(c(1, 2), each = 50)
+
+d |>
+  ggplot2::ggplot(ggplot2::aes(x = .average, y = .difference)) +
+  ggplot2::facet_wrap(~group) +
+  geom_ba()
 
 }
