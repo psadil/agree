@@ -114,10 +114,9 @@ GeomBA <- ggplot2::ggproto(
     linetype = 1,
     alpha = 0.2
   ),
-  draw_panel = function(
-      self,
-      data,
-      ...) {
+  draw_panel = function(self,
+                        data,
+                        ...) {
     center <- data |>
       dplyr::mutate(ymin = y_lower, ymax = y_upper) |>
       dplyr::arrange(x)
@@ -136,19 +135,26 @@ GeomBA <- ggplot2::ggproto(
       ggdist::GeomLineribbon$draw_panel(upper, ...)
     )
     grobs
-    # grid::gTree(children = grobs)
   }
 )
 
 #' Bland-Altman Agreement Plot
 #'
-#' @param mapping Set of aesthetic mappings created by aes(). If specified and inherit.aes = TRUE (the default), it is combined with the default mapping at the top level of the plot. You must supply mapping if there is no plot mapping.
+#' @param mapping Set of aesthetic mappings created by [ggplot2::aes()].
+#' If specified and inherit.aes = TRUE (the default), it is combined with the
+#' default mapping at the top level of the plot. You must supply mapping if
+#' there is no plot mapping.
 #' @param data The data to be displayed in this layer
 #' @param stat Generally unused
 #' @param position Generally unused
-#' @param na.rm If FALSE, the default, missing values are removed with a warning. If TRUE, missing values are silently removed.
-#' @param show.legend logical. Should this layer be included in the legends? NA, the default, includes if any aesthetics are mapped. FALSE never includes, and TRUE always includes. It can also be a named logical vector to finely select the aesthetics to display.
-#' @param inherit.aes If FALSE, overrides the default aesthetics, rather than combining with them.
+#' @param na.rm If FALSE, the default, missing values are removed with a
+#' warning. If TRUE, missing values are silently removed.
+#' @param show.legend logical. Should this layer be included in the legends? NA,
+#' the default, includes if any aesthetics are mapped. FALSE never includes, and
+#' TRUE always includes. It can also be a named logical vector to finely select
+#' the aesthetics to display.
+#' @param inherit.aes If FALSE, overrides the default aesthetics, rather than
+#' combining with them.
 #' @param ... Other arguments passed on to [ggplot2::layer()].
 #'
 #' @export
