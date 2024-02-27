@@ -16,7 +16,10 @@ geom_ba(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by aes(). If specified and inherit.aes = TRUE (the default), it is combined with the default mapping at the top level of the plot. You must supply mapping if there is no plot mapping.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{ggplot2::aes()}}.
+If specified and inherit.aes = TRUE (the default), it is combined with the
+default mapping at the top level of the plot. You must supply mapping if
+there is no plot mapping.}
 
 \item{data}{The data to be displayed in this layer}
 
@@ -24,11 +27,16 @@ geom_ba(
 
 \item{position}{Generally unused}
 
-\item{na.rm}{If FALSE, the default, missing values are removed with a warning. If TRUE, missing values are silently removed.}
+\item{na.rm}{If FALSE, the default, missing values are removed with a
+warning. If TRUE, missing values are silently removed.}
 
-\item{show.legend}{logical. Should this layer be included in the legends? NA, the default, includes if any aesthetics are mapped. FALSE never includes, and TRUE always includes. It can also be a named logical vector to finely select the aesthetics to display.}
+\item{show.legend}{logical. Should this layer be included in the legends? NA,
+the default, includes if any aesthetics are mapped. FALSE never includes, and
+TRUE always includes. It can also be a named logical vector to finely select
+the aesthetics to display.}
 
-\item{inherit.aes}{If FALSE, overrides the default aesthetics, rather than combining with them.}
+\item{inherit.aes}{If FALSE, overrides the default aesthetics, rather than
+combining with them.}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{ggplot2::layer()}}.}
 }

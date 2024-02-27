@@ -119,15 +119,18 @@ GeomBA <- ggplot2::ggproto(
                         ...) {
     center <- data |>
       dplyr::mutate(ymin = y_lower, ymax = y_upper) |>
-      dplyr::arrange(x)
+      dplyr::arrange(x) |>
+      dplyr::filter(x %in% c(min(x), max(x)))
 
     lower <- data |>
       dplyr::mutate(y = lower, ymax = lower_upper, fill = "red") |>
-      dplyr::arrange(x)
+      dplyr::arrange(x) |>
+      dplyr::filter(x %in% c(min(x), max(x)))
 
     upper <- data |>
       dplyr::mutate(y = upper, ymin = upper_lower, fill = "red") |>
-      dplyr::arrange(x)
+      dplyr::arrange(x) |>
+      dplyr::filter(x %in% c(min(x), max(x)))
 
     grobs <- grid::gList(
       ggdist::GeomLineribbon$draw_panel(center, ...),
